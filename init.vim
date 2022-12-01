@@ -27,11 +27,21 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+nnoremap T :tabnew<CR> 
+nnoremap <F3> /MARK<CR>
+nnoremap <F4> ?MARK<CR>
+
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+
 " inoremap { {}<Esc>ha<Tab>
 " inoremap { {<CR>}<Esc>ko<tab>
 " inoremap ( ()<Esc>ha
 " inoremap [ []<Esc>ha
-" inoremap " ""<Esc>ha
 " inoremap ' ''<Esc>ha
 " inoremap ` ``<Esc>ha
 "let g:NERDTreeDirArrowExpandable="+"

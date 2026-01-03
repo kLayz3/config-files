@@ -11,6 +11,7 @@ xkb_symbols "colemak_k14y23" {
 
     // Apostrophe key is Level-5 modifer:
     key <AC11> { [ ISO_Level5_Shift ] };
+	modifier_map Mod3 { <AC11> };
 
     key.type[Group1]= "EIGHT_LEVEL_ALPHABETIC";
 

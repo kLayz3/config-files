@@ -1,0 +1,7 @@
+xkb_keymap {
+	xkb_keycodes  { include "evdev+aliases(qwerty)"	};
+	xkb_types     { include "complete"	};
+	xkb_compat    { include "complete"	};
+	xkb_symbols   { include "pc+us+us(colemak_dh):2+de:3+inet(evdev)+terminate(ctrl_alt_bksp)+group(win_space_toggle):1+group(win_space_toggle):2+group(win_space_toggle):3+colemak_k14y23(colemak_k14y23)" };
+	xkb_geometry  { include "pc(pc105)"	};
+};

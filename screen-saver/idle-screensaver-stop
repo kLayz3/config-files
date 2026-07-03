@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PIDFILE="/tmp/idle-screensaver-mpv.pid"
+
+if [[ -f "$PIDFILE" ]]; then
+    kill "$(cat "$PIDFILE")" 2>/dev/null
+    rm -f "$PIDFILE"
+fi

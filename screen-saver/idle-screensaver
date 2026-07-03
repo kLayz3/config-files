@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+VIDEO="$HOME/Videos/screensaver/hatsune-miku-s-room-moewalls-com.mp4"
+PIDFILE="/tmp/idle-screensaver-mpv.pid"
+
+# Do not start twice
+if [[ -f "$PIDFILE" ]] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+    exit 0
+fi
+
+mpv --fs --loop --no-audio --ontop --title="idle-screensaver" "$VIDEO" &
+echo $! > "$PIDFILE"

@@ -8,5 +8,21 @@ if [[ -f "$PIDFILE" ]] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
     exit 0
 fi
 
-mpv --fs --loop --no-audio --ontop --title="idle-screensaver" "$VIDEO" &
-echo $! > "$PIDFILE"
+:> "$PIDFILE"
+
+# Start one mpv per exposed monitor
+mapfile -t MONITORS < <(hyprctl monitors -j | jq -r '.[].name')
+
+for mon in "${MONITORS[@]}"; do
+  echo "mon: $mon"
+  mpv \
+    --fs \
+    --fs-screen-name="$mon" \
+    --loop \
+    --no-audio \
+    --ontop \
+    --title="idle-screensaver-$mon" \
+    "$VIDEO" &
+  
+  echo $! >> "$PIDFILE"
+done

@@ -3,6 +3,8 @@
 PIDFILE="/tmp/idle-screensaver-mpv.pid"
 
 if [[ -f "$PIDFILE" ]]; then
-    kill "$(cat "$PIDFILE")" 2>/dev/null
+    xargs -r kill < "$PIDFILE" 2>/dev/null
     rm -f "$PIDFILE"
 fi
+
+pkill -f "idle-screensaver-" 2>/dev/null

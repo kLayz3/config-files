@@ -3,6 +3,8 @@
 VIDEO="$HOME/Videos/screensaver/hatsune-miku-s-room-moewalls-com.mp4"
 PIDFILE="/tmp/idle-screensaver-mpv.pid"
 
+LOCK_AFTER=180
+
 # Do not start twice
 if [[ -f "$PIDFILE" ]] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
     exit 0
@@ -20,9 +22,18 @@ for mon in "${MONITORS[@]}"; do
     --fs-screen-name="$mon" \
     --loop \
     --no-audio \
-    --ontop \
     --title="idle-screensaver-$mon" \
     "$VIDEO" &
   
   echo $! >> "$PIDFILE"
 done
+
+# Delay lock sequence
+(
+  sleep "$LOCK_AFTER"
+  
+  # Kill the screensaver first
+  ~/.local/bin/idle-screensaver-stop
+
+  omarchy-system-lock
+) &

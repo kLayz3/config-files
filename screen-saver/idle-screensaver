@@ -1,22 +1,25 @@
 #!/usr/bin/env bash
 
 VIDEO="$HOME/Videos/screensaver/hatsune-miku-s-room-moewalls-com.mp4"
-PIDFILE="/tmp/idle-screensaver-mpv.pid"
+MPV_PIDFILE="/tmp/idle-screensaver-mpv.pid"
+LOCK_PIDFILE="/tmp/idle-screensaver-lock.pid"
 
-LOCK_AFTER=180
+LOCK_AFTER=240
 
 # Do not start twice
-if [[ -f "$PIDFILE" ]] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+if [[ -f "$MPV_PIDFILE" ]] && kill -0 "$(cat "$MPV_PIDFILE")" 2>/dev/null; then
+    exit 0
+fi
+if [[ -f "$LOCK_PIDFILE" ]] && kill -0 "$(cat "$LOCK_PIDFILE")" 2>/dev/null; then
     exit 0
 fi
 
-:> "$PIDFILE"
+:> "$MPV_PIDFILE"
 
 # Start one mpv per exposed monitor
 mapfile -t MONITORS < <(hyprctl monitors -j | jq -r '.[].name')
 
 for mon in "${MONITORS[@]}"; do
-  echo "mon: $mon"
   mpv \
     --fs \
     --fs-screen-name="$mon" \
@@ -25,7 +28,7 @@ for mon in "${MONITORS[@]}"; do
     --title="idle-screensaver-$mon" \
     "$VIDEO" &
   
-  echo $! >> "$PIDFILE"
+  echo $! >> "$MPV_PIDFILE"
 done
 
 # Delay lock sequence
@@ -33,7 +36,9 @@ done
   sleep "$LOCK_AFTER"
   
   # Kill the screensaver first
-  ~/.local/bin/idle-screensaver-stop
+  ~/.local/bin/idle-screensaver-stop-video
 
   omarchy-system-lock
 ) &
+
+echo $! > "$LOCK_PIDFILE"

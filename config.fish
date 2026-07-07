@@ -67,13 +67,18 @@ function v
     nvim $argv
 end
 
-function ssave
-    set help "Usage:" (status function) "\n  Will start the uWu screensaver."
-    if contains -- --help $argv; or contains -- -h $argv
-        echo -e $help
-        return 0
+function nvim2
+    if test (count $argv) -lt 2
+        echo "Usage:" (status function) "file1 file2"
+        return 1
+    else
+        nvim -c "vs $argv[1]" $argv[2]
     end
-    idle-screensaver 2>1 >/dev/null &
+end
+
+function run
+    printf '%s\n' (string join ' ' -- (string escape -- $argv)) >>log.txt
+    $argv
 end
 
 fish_add_path $HOME/.cargo/bin

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+LOCK_PIDFILE="/tmp/idle-screensaver-lock.pid"
+
+if [[ -f "$LOCK_PIDFILE" ]]; then
+    xargs -r kill < "$LOCK_PIDFILE" 2>/dev/null
+  rm -f "$LOCK_PIDFILE"
+fi
+
+pkill -f "idle-screensaver-" 2>/dev/null

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+MPV_PIDFILE="/tmp/idle-screensaver-mpv.pid"
+
+if [[ -f "$MPV_PIDFILE" ]]; then
+    xargs -r kill < "$MPV_PIDFILE" 2>/dev/null
+  rm -f "$MPV_PIDFILE"
+fi
+
+pkill -f "idle-screensaver-" 2>/dev/null

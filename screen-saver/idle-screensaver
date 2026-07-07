@@ -10,7 +10,7 @@ LOCK_AFTER=240
 if [[ -f "$MPV_PIDFILE" ]] && kill -0 "$(cat "$MPV_PIDFILE")" 2>/dev/null; then
     exit 0
 fi
-if [[ -f "$LOCK_PIDFILE" ]] && kill -0 "$(cat "$LOCK_PIDFILE")" 2>/dev/null; then
+if [[ -f "$LOCK_PIDFILE" ]] && xargs -r kill -0 < "$(cat "$LOCK_PIDFILE")" 2>/dev/null; then
     exit 0
 fi
 

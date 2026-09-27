@@ -1,32 +1,64 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
-[ $# -lt 1 ] \
-	&& { LAYOUT="colemak_k14y23"; } \
-	|| { LAYOUT=$1; }
+# https://gist.github.com/mohanpedala/1e2ff5661761d3abd0385e8223e16425?permalink_comment_id=3799230
+# I like my pipe to be hardened mhmmm
+set -euo pipefail
 
-# Try setting it directly. It will fail if either keymap or symbols file not found.
-xkbcomp -I"$HOME/.xkb" "$HOME/.xkb/keymap/$LAYOUT" $DISPLAY 2>/dev/null
+# Keep the extracted xkb/ directory beside this script.
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_DIR="$SCRIPT_DIR/../xkb"
+TARGET_DIR="$HOME/.xkb"
+LAYOUT="qwerty_k14y23"
 
-if [ $? -ne 0 ]; then
-    # It's OK. Try to rebuild the keymap file
-    mkdir -p "$HOME/.xkb/"{symbols,keymap}
+SESSION_TYPE="${XDG_SESSION_TYPE:-}"
+DESKTOP="${XDG_CURRENT_DESKTOP:-}"
 
-    # Layout must exit in symbols subdirectory, if not wget it
-    if [ ! -f "$HOME/.xkb/symbols/$LAYOUT" ]; then 
-        mv "../xkb/$LAYOUT" "$HOME/.xkb/symbols/"
-    fi
+fail() {
+	printf '%s\n' "$*" >&2
+	exit 1
+}
 
-    # Dump current layout and stash it in ~/.xkb/keymap/$LAYOUT (for now)
-    setxkbmap -print > "$HOME/.xkb/keymap/$LAYOUT"
-
-    perl -pe "s{^\s*xkb_symbols\s*\{\s*include\s*\"[^\"]+\K(?=\")(?![^\"]*$LAYOUT\($LAYOUT\))}{\+$LAYOUT\($LAYOUT\)}mx" \
-        -i "$HOME/.xkb/keymap/$LAYOUT"
-    
-    xkbcomp -I"$HOME/.xkb" "$HOME/.xkb/keymap/$LAYOUT" $DISPLAY 2>/dev/null
-    
-    [ $? -ne 0 ] \
-        && { echo "Cannot set up the layout somehow. Check $HOME/.xkb directories."; exit 1; } \
-        || { echo "Successfully set-up the layout \'$LAYOUT\'. Enjoy."; } \
+# Check Wayland *before* DISPLAY: Wayland sessions often also run Xwayland.
+if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" || "${DESKTOP,,}" == *hyprland* ]]; then
+	BACKEND="hyprland"
+	TARGET_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/xkb"
+	command -v hyprctl >/dev/null 2>&1 || fail 'Required command not found: hyprctl'
+	hyprctl version >/dev/null
+elif [[ "${SESSION_TYPE,,}" == wayland || -n "${WAYLAND_DISPLAY:-}" ]]; then
+	fail 'This Wayland compositor is not Hyprland. Configure its keyboard settings directly.'
+elif [[ -n "${DISPLAY:-}" ]]; then
+	BACKEND="x11"
+	TARGET_DIR="$HOME/.xkb"
+	command -v xkbcomp >/dev/null 2>&1 || fail 'Required command not found: xkbcomp'
+else
+	fail 'No supported graphical session detected. Run this inside Hyprland or X11.'
 fi
 
+if [[ -z "${DISPLAY:-}" ]]; then
+	printf 'No DISPLAY set; run this inside your Hyprland/X11 session.\n' >&2
+	exit 1
+fi
 
+# Check all missing files before installing anything.
+for KIND in symbols keymap; do
+	if [[ ! -f "$TARGET_DIR/$KIND/$LAYOUT" && ! -f "$SOURCE_DIR/$KIND/$LAYOUT" ]]; then
+		fail 'Missing layout file: %s\n' "$SOURCE_DIR/$KIND/$LAYOUT"
+	fi
+done
+
+for KIND in symbols keymap; do
+	if [[ ! -f "$TARGET_DIR/$KIND/$LAYOUT" ]]; then
+		mkdir -p -- "$TARGET_DIR/$KIND"
+		cp -- "$SOURCE_DIR/$KIND/$LAYOUT" "$TARGET_DIR/$KIND/$LAYOUT"
+	fi
+done
+
+printf "Loading '%s' through %s ...\n" "$LAYOUT" "$BACKEND"
+if [[ "$BACKEND" == x11 ]]; then
+	exec xkbcomp -w3 -I"$TARGET_DIR" "$TARGET_DIR/keymap/$LAYOUT" "$DISPLAY"
+fi
+
+hyprctl keyword input:kb_file "$TARGET_DIR/keymap/$LAYOUT"
+
+# Group 0 is the custom layout; the bundled map also contains US and German.
+hyprctl switchxkblayout all 0

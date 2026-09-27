@@ -1,1 +1,3 @@
-`hotstart.sh` script is obsolete and shouldn't be used.
+`hotstart.sh` attempts to load the XKB configuration automatically.
+
+NOTE: very brittle for Hyprland/Wayland setups.

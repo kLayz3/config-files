@@ -41,8 +41,8 @@ xkb_symbols "qwerty_k14y23" {
     key <AE09> { [                    9,            parenleft,  leftsinglequotemark,  leftdoublequotemark,  leftsinglequotemark,            KP_Divide,                U27E9,             emptyset ] };
     key <AE10> { [                    0,           parenright, rightsinglequotemark, rightdoublequotemark, rightsinglequotemark,          KP_Multiply,        zerosubscript,         intersection ] };
                                                                                                                                                                       
-    key <AD01> { [                    q,                    Q,          acircumflex,          Acircumflex,             ellipsis,                Prior,                U2235,                U211A ] };
-    key <AD02> { [                    w,                    W,                U0103,                U0102,           underscore,            BackSpace,              radical,             cuberoot ] };
+    key <AD01> { [                    q,                    Q,          acircumflex,          Acircumflex,               Delete,               Delete,                U2235,                U211A ] };
+    key <AD02> { [                    w,                    W,                U0103,                U0102,            BackSpace,            BackSpace,              radical,             cuberoot ] };
     key <AD03> { [                    e,                    E,               eacute,               Eacute,          bracketleft,                 KP_5,            Greek_eta,                U2208 ] };
     key <AD04> { [                    r,                    R,                aring,                Aring,         bracketright,                 Left,            Greek_rho,                U211D ] };
     key <AD05> { [                    t,                    T,                U021B,                U021A,          asciicircum,                Right,            Greek_tau,                U22A5 ] };
@@ -50,7 +50,7 @@ xkb_symbols "qwerty_k14y23" {
     key <AD07> { [                    u,                    U,           udiaeresis,           Udiaeresis,                 less,                 KP_8,        Greek_upsilon,                U222A ] };
     key <AD08> { [                    i,                    I,               iacute,               Iacute,              greater,                 KP_6,           Greek_iota,                U2225 ] };
     key <AD09> { [                    o,                    O,           odiaeresis,           Odiaeresis,                equal,         KP_Separator,          Greek_omega,          Greek_OMEGA ] };
-    key <AD10> { [                    p,                    P,               oslash,               Oslash,            ampersand,               Delete,             Greek_pi,                U220F ] };
+    key <AD10> { [                    p,                    P,               oslash,               Oslash,            ampersand,           asciitilde,             Greek_pi,                U220F ] };
     key <AD11> { [          bracketleft,            braceleft,        guillemotleft,            0x1002039,                U017F,                U2212,             integral,    partialderivative ] };
     key <AD12> { [         bracketright,           braceright,       guillemotright,            0x100203a,          dead_stroke,     dead_doubleacute,                U2218,                U2297 ] };
                                                                                                                                                                        
@@ -69,10 +69,10 @@ xkb_symbols "qwerty_k14y23" {
     key <AB02> { [                    x,                    X,               ccaron,               Ccaron,               dollar,               Escape,            Greek_chi,                U2A2F ] };
     key <AB03> { [                    c,                    C,               cacute,               Cacute,                  bar,                  Tab,                U2102,                U2282 ] };
     key <AB04> { [                    v,                    V,                U00E7,                U00C7,           asciitilde,               Return,                U2220,                U2221 ] };
-    key <AB05> { [                    b,                    B,               ssharp,            0x1001e9e,                grave,                 Next,           Greek_beta,                U2248 ] };
+    key <AB05> { [                    b,                    B,               ssharp,            0x1001e9e,           underscore,                 Next,           Greek_beta,                U2248 ] };
     key <AB06> { [                    n,                    N,               ntilde,               Ntilde,                 plus,                 KP_4,             Greek_nu,                U2115 ] };
     key <AB07> { [                    m,                    M,                   ae,                   AE,              percent,         questiondown,             Greek_mu,                U2261 ] };
     key <AB08> { [                comma,                 less,                U00EE,                U00CE,             asterisk,                 KP_2,            therefore,                U2264 ] };
     key <AB09> { [               period,              greater,        dead_abovedot,           asciitilde,             question,                 KP_3,                U03D1,                U2265 ] };
-    key <AB10> { [                slash,             question,         questiondown,           asciitilde,            semicolon,            semicolon,             NoSymbol,             NoSymbol ] };
+    key <AB10> { [                slash,             question,         questiondown,           asciitilde,             ellipsis,            semicolon,             NoSymbol,             NoSymbol ] };
 };

@@ -54,11 +54,12 @@ for KIND in symbols keymap; do
 done
 
 printf "Loading '%s' through %s ...\n" "$LAYOUT" "$BACKEND"
+printf "Target dir: '%s\n" "$TARGET_DIR"
+
 if [[ "$BACKEND" == x11 ]]; then
 	exec xkbcomp -w3 -I"$TARGET_DIR" "$TARGET_DIR/keymap/$LAYOUT" "$DISPLAY"
 fi
 
+hyprctl keyword input:kb_file ""
 hyprctl keyword input:kb_file "$TARGET_DIR/keymap/$LAYOUT"
-
-# Group 0 is the custom layout; the bundled map also contains US and German.
 hyprctl switchxkblayout all 0

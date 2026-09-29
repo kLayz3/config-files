@@ -70,7 +70,7 @@ xkb_symbols "qwerty_k14y23" {
     key <AB04> { [                    v,                    V,                U00E7,                U00C7,           asciitilde,               Return,                U2220,                U2221 ] };
     key <AB05> { [                    b,                    B,               ssharp,            0x1001e9e,                grave,                 Next,           Greek_beta,                U2248 ] };
     key <AB06> { [                    n,                    N,               ntilde,               Ntilde,                 plus,                 KP_4,             Greek_nu,                U2115 ] };
-    key <AB07> { [                    m,                    M,                   ae,                   AE,              percent,         questiondown,             Greek_mu,                U2261 ] };
+    key <AB07> { [                    m,                    M,                   ae,                   AE,                minus,         questiondown,             Greek_mu,                U2261 ] };
     key <AB08> { [                comma,                 less,                U00EE,                U00CE,             asterisk,                 KP_2,            therefore,                U2264 ] };
     key <AB09> { [               period,              greater,        dead_abovedot,           asciitilde,             question,                 KP_3,                U03D1,                U2265 ] };
     key <AB10> { [                slash,             question,         questiondown,           asciitilde,             ellipsis,            semicolon,             NoSymbol,             NoSymbol ] };

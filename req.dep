@@ -1,7 +1,9 @@
 fastfetch
-mpvpaper
 cmatrix
 cargo install rustlings
+
 https://github.com/bjarneo/omarchy-pulsar-theme
+omarchy plugin add https://github.com/TerrifiedBug/omascreensaver.git --enable
 
-
+With new omarchy 4+ just uninstall the `foot` shell (cause PTSD), use alacritty like
+a sane human being.

@@ -118,8 +118,6 @@ function z
     end
 end
 
-setxkbmap -option 'caps:ctrl_modifier'
-
 fish_add_path $HOME/.cargo/bin
 set -x GIT_PAGER
 set -x UCESB_DIR $HOME/daq-playground/ucesb

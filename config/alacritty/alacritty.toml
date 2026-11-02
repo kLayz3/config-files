@@ -7,9 +7,11 @@ TERM = "xterm-256color"
 osc52 = "CopyPaste"
 
 [font]
-normal = { family = "JetBrainsMono Nerd Font Mono" }
-bold = { family = "JetBrainsMono Nerd Font Mono" }
-italic = { family = "JetBrainsMono Nerd Font Mono" }
+normal = { family = "JetBrainsMono Nerd Font Mono", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font Mono", style = "Bold"  }
+italic = { family = "JetBrainsMono Nerd Font Mono", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font Mono", style = "Bold Italic" }
+
 size = 9
 
 [window]

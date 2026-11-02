@@ -126,6 +126,7 @@ set -x UCESB_DIR $HOME/daq-playground/ucesb
 set -x UCESB_BASE_DIR "$UCESB_DIR"
 set --global fish_greeting
 set -x LISE_PATH $HOME/lise/lise-app
+set -x DOCU $HOME/daq-playground/docu
 
 alias empty="$UCESB_DIR/empty/empty"
 alias lise="$LISE_PATH/LISE++"

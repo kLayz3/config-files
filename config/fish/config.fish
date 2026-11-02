@@ -109,6 +109,15 @@ function run
     $argv
 end
 
+function z
+    if test (count $argv) -lt 1
+        echo "Usage:" (status function) "file. Opens the file in zathura detach mode."
+        return 1
+    else
+        zathura $argv[1]&; disown
+    end
+end
+
 setxkbmap -option 'caps:ctrl_modifier'
 
 fish_add_path $HOME/.cargo/bin
@@ -122,7 +131,7 @@ alias empty="$UCESB_DIR/empty/empty"
 alias lise="$LISE_PATH/LISE++"
 alias cp="cp -i"
 alias mv="mv -i"
-alisd rm="rm -i"
+alias rm="rm -i"
 alias vim="nvim"
 alias r="root -l --web=off"
 

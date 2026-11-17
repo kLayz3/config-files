@@ -119,12 +119,17 @@ function z
 end
 
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/.local/opt/bin
+
 set -x GIT_PAGER
 set -x UCESB_DIR $HOME/daq-playground/ucesb
 set -x UCESB_BASE_DIR "$UCESB_DIR"
 set --global fish_greeting
 set -x LISE_PATH $HOME/lise/lise-app
 set -x DOCU $HOME/daq-playground/docu
+
+set -gx AN "$HOME/phd/analysis"
+set -gx RSCRIPTPATH "$AN/scripts"
 
 alias empty="$UCESB_DIR/empty/empty"
 alias lise="$LISE_PATH/LISE++"
@@ -133,5 +138,34 @@ alias mv="mv -i"
 alias rm="rm -i"
 alias vim="nvim"
 alias r="root -l --web=off"
+
+function canvas
+	if test (count $argv) -lt 2
+		echo "Usage:" (status function) "NUM|LOCATION file"
+		echo "  Will extract the canvas with number NUM (or location LOC)."
+		echo "  Loc: lu|ld|ru|rd ; l=left, r=right, u=up, d=down"
+		echo "  Is :  1| 3| 2| 4"
+		return 1
+	end
+
+	set -l pad "$argv[1]"
+	switch "$pad"
+		case lu
+			set pad 1
+		case ru
+			set pad 2
+		case ld
+			set pad 3
+		case rd
+			set pad 4
+	end
+	
+	# Escape the filename for the C++ string literal.
+	set -l file (string replace -a -- '\\' '\\\\' "$argv[2]")
+	set file (string replace -a -- '"' '\\"' "$file")
+
+	command root -l --web=off \
+		"$RSCRIPTPATH/extract_pad.C($pad, \"$file\")"
+end
 
 fastfetch

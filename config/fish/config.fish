@@ -94,6 +94,25 @@ function run
     printf '%s\n' (string join ' ' -- (string escape -- $argv)) >> log.txt
     $argv
 end
+function exec_log
+    if test (count $argv) -ne 1; or not string match -qr '^[1-9][0-9]*$' -- "$argv[1]"
+        echo 'Usage: exec_log LINE_NUMBER' >&2
+        return 2
+    end
+
+    if not test -r log.txt
+        echo 'Cannot read log.txt in the current directory' >&2
+        return 1
+    end
+
+    set -l line (sed -n "$argv[1]p" log.txt)
+    if test -z "$line"
+        echo "Line $argv[1] is empty or does not exist" >&2
+        return 1
+    end
+
+    eval "$line"
+end
 
 function nvim2
     if test (count $argv) -lt 2
@@ -102,11 +121,6 @@ function nvim2
     else
         nvim -c "vs $argv[2]" $argv[1]
     end
-end
-
-function run
-    printf '%s\n' (string join ' ' -- (string escape -- $argv)) >>log.txt
-    $argv
 end
 
 function z
@@ -141,14 +155,14 @@ alias r="root -l --web=off"
 
 function canvas
 	if test (count $argv) -lt 2
-		echo "Usage:" (status function) "NUM|LOCATION file"
+		echo "Usage:" (status function) "file NUM|LOCATION"
 		echo "  Will extract the canvas with number NUM (or location LOC)."
 		echo "  Loc: lu|ld|ru|rd ; l=left, r=right, u=up, d=down"
 		echo "  Is :  1| 3| 2| 4"
 		return 1
 	end
 
-	set -l pad "$argv[1]"
+	set -l pad "$argv[2]"
 	switch "$pad"
 		case lu
 			set pad 1
@@ -161,11 +175,45 @@ function canvas
 	end
 	
 	# Escape the filename for the C++ string literal.
-	set -l file (string replace -a -- '\\' '\\\\' "$argv[2]")
+	set -l file (string replace -a -- '\\' '\\\\' "$argv[1]")
 	set file (string replace -a -- '"' '\\"' "$file")
 
 	command root -l --web=off \
 		"$RSCRIPTPATH/extract_pad.C($pad, \"$file\")"
+end
+
+function getpage
+    set -l argc (count $argv)
+    if test $argc -lt 2; or test $argc -gt 4
+		echo "Usage:" (status function) "file LO [HI] [OUTNAME]" >&2
+		echo "  Will extract the pages with number [LO,HI] from a pdf." >&2
+		return 1
+	end
+
+    set -l file "$argv[1]";
+    set -l lo $argv[2];
+    set -l hi $lo;
+    set -l stem (path basename "$file" | path change-extension '')
+    set -l out "$stem"
+
+    if test $argc -ge 3
+        set hi "$argv[3]"
+        set out "$stem"_"$lo"_"$hi"
+    end
+
+    if test $argc -eq 4
+        set out "$argv[4]"
+    end
+
+     if not string match -qr '^[1-9][0-9]*$' -- "$lo"; or not string match -qr '^[1-9][0-9]*$' -- "$hi"; or test "$hi" -lt "$lo"
+        echo "Expected page numbers with 1 <= LO <= HI." >&2
+        return 1
+    end
+
+    for page in (seq "$lo" "$hi")
+        pdftoppm -png -cropbox -r 300 -f "$page" -l "$page" -singlefile \
+            "$file" "$out"_"$page"; or return $status
+    end
 end
 
 fastfetch

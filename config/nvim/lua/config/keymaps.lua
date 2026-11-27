@@ -54,3 +54,6 @@ vim.cmd([[
   \ ? 'QuitDelete'
   \ : 'q'
 ]])
+
+-- Disable the moronic nmap L that opens a new buffer.
+vim.keymap.set("n", "L", "<Nop>", { desc = "Disable accidental buffer switching" })

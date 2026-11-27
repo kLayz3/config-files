@@ -1,11 +1,14 @@
-require("config.remote_clipboard").setup()
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
+require("config.remote_clipboard").setup()
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.autoindent = true
+
+vim.opt.expandtab = false
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.smarttab = true
@@ -17,7 +20,7 @@ vim.g.autoformat = false
 
 local lsp = vim.lsp
 if lsp and lsp.inlay_hint then
-  lsp.inlay_hint.enable(false)
+    lsp.inlay_hint.enable(false)
 end
 
 -- Restore Vim's default split placement
